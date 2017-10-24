@@ -1,0 +1,33 @@
+marina92, tomer.levy1
+Marina Furen (319216438), Tomer Levy (304854938)
+EX: 4
+
+FILES:
+README
+Makefile
+Cache.h
+Cache.cpp
+CacheBlock.h
+CacheBlock.cpp
+CacheFS.cpp
+
+REMARKS: 
+
+In this exercise we had to implement a cache system for a file system.
+The idea was to superimpose to cache on the RAM and so avoid redundant disk
+accesses. We had to implement three different cache algorithms whereas 
+each has a different policy for removing blocks from the cache once it is full.
+Thus, we used an OO design for the cache implementation. Each cache algorithm
+inherits from the cache interface and overrides the removal policy based
+on the algorithm itself. This seemed like the natural design decision since
+the objects have a is-a relationship. For the blocks themselves we figured
+that a block object is optimal. In the library directory we have used 
+polymorphism approach. 
+
+ANSWERS:
+
+
+
+
+
+

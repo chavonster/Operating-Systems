@@ -1,0 +1,81 @@
+marina92, tomer.levy1
+Marina Furen (319216438), Tomer Levy (304854938)
+EX: 2
+
+FILES:
+README
+Makefile
+uthreads.cpp
+
+REMARKS:
+We came up with the following design. Each user thread is described by a struct
+holding a vital information about it (e.g. it's state and id). We keep track
+of the ids that are "in game" by an integers array which is maintained every
+time a thread's status has changed. We use a vector as our queue for threads 
+in ready state and in block state. Since we know that a thread could be found in 
+only one out of three stated, we figured it's pointless to hold all threads in 
+out container as we can search them in their state respcetively. For effciency
+purposes we only store pointers to the user thread structs and not the structs
+themselves. In addition to the library funcionts, we have used auxiliary methods
+to encapsualte functionaility from the user. The thread switiching is 
+implemented in the schedule function which is based on the Round Robin algorithm.
+
+
+ANSWERS:
+
+Q. I
+One usage of user-level threads would be code organisation. By using user-level 
+threads, the developer has greater control over the code. Splitting a task 
+between several threads can break it to independent modules, thus be compatible 
+with modularity principle . The advantage of uthreads vs. kernel-level threads 
+is that synchronization is faster since it is done in the application level. 
+Moreover It is cheaper to create u threads because they share the process 
+environment and only require their own stack. Thus, context switch takes much 
+faster with uthreads than with kernel level thread. Finally, thread switching 
+does not require OS hence faster.
+
+Q. II
+The advantages of creating new process over a kernel level thread are as 
+follows:
+Processes are more secure, since there is an extensive sharing privileges among 
+threads there is a potential data overriding. For instance, threads can access 
+their siblings’ stack and make changes within which can be harmful. Processes 
+only communicate via messages. 
+On the other hand, the disadvantages of a new process over threads are:
+Sharing their process date, threads do not need interprocess communication. 
+Which makes their time performance better. 
+Threads are inexpensive to spawn and to terminate, since they only require space 
+for the PC, the SP, and the general-purpose registers, unlike a process which 
+require more resources. For instance OS resources files etc.
+When a kernel-level thread in a process is blocked, the OS can schedule a 
+different thread of the same process to run and process will not stop entirely. 
+While with multiple processes, if a process is blocked we have to wait until it 
+is unblocked in order for it to resume it’s job.
+
+
+Q. III
+We run shotwell, find it’s pid with ps -A | grep shotwell, then run kill command 
+with no flags and the process id. We run it using strace so we’d be able to 
+track the signals and interruptions. The relevant syscall in this case is - 
+kill(21290, SIGTERM)  = 0. As we have learnt, the signals are sent by the OS.  
+The signal that was sent in our case is SIGTERM. Unlike SIGKILL, SIGTERM can be 
+blocked and handled by the program if we equip it with a sigaction handler. If a 
+handler does not exist the kernel’s default behavior is to terminate the process 
+immediately which is what happened in this example. Since SIGTERM can be handled 
+by the program, and in particular, can be blocked, on some cases we will not be 
+able to terminate the process using this command. In this case, if we’d still 
+want to terminate the process, we can use kill -9 which sends SIGKILL to the 
+process which can’t be masked. Since we send the command using the keyboard, 
+initially there is a keyboard interrupt which is sent to the OS.
+
+Q. IV
+The build-in timer allows us to choose whether we want a ‘real’ time alarm or 
+‘virtual’ time. The difference lies within the definition. Real time is the 
+actual time that has passed since setting the clock (which would align with a 
+wall clock). Whereas virtual time measures the time that elapsed only during the 
+execution of a specific process. In case of this exercise, we are only 
+interested in measuring the time of one process, since all the threads ‘live’ 
+within it, hence ‘virtual’ time mode is the right decision for us. ‘Real’ time 
+mode would be relevant in cases of which one would need to repeat some code 
+section after a given amount of time, like Bitcoin block chain algorithm which 
+generates a new block every ten minutes.   

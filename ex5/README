@@ -1,0 +1,64 @@
+marina92, tomer.levy1
+Marina Furen (319216438), Tomer Levy (304854938)
+EX: 5
+
+FILES:
+README
+Makefile
+whatsappClient.h
+whatsappClient.cpp
+whatsappServer.h
+whatsappServer.cpp
+
+REMARKS:
+In this exercise we had to implement a client server interface to simulate 
+a whatsApp esque application. We used the OS sockets API for this task.
+After establishing the server. It manages the different requests by parsing them
+choose the compatible handler and sending a response to the user.
+The server holds a data structure for the different logged in clients and for 
+the different groups.
+
+
+ANSWERS:
+
+1. a. In order to add the function “leave_group” we will need to add support 
+for it in the client’s side, thus, we need to properly parse the command and
+send it to the server in accordance with our sending protocol.
+b. In order to add the function “leave_group” we will need to make some changes
+in the server side. After receiving such a message from a client, we will need
+to Add a handler for it inside the requests parser. This handler will include
+finding the compatible group and if the user is indeed a member to remove him 
+rom the group’s set. 
+ 
+2. We prefer TCP over UDP in our exercise because we require a reliable
+transmission, according to our protocol. In UDP the packets are not numbered, 
+they may be delayed or lost or may arrive out of sequence. Since our exercise 
+is to implement a server-client protocol, TCP is better because it guarantees
+ to be reliable and to transfer all data without loss. In addition it has a 
+more reliable error control mechanism. 
+ 
+3. First example - video streaming and especially VoIP (for example- Skype).
+UDP is a better match in this case since it’s not critical for us to receive 
+all data and we can contain losses. The tradeoff in this case would be better
+communication speed which is more needed here. UDP allows you greater control 
+over the sort of TCP-like implementation you're making. It gives you greater
+flexibility to execute packets out of order, discard packets that you consider
+unnecessary while retrying packets you consider important, that sort of thing.
+But this should only be done if needed and if you have the necessary expertise.
+ 
+Second example - online gaming. The reason why UDP is better in this case is
+that, there are times when it could be "okay" if you lose some packet
+(just for. e.g. secondary non-critical events to complete gameplay), 
+there are also times where its "not at all okay" to lose some data e.g cursor 
+movement etc. UDP doesn't waste time in pushing them again and again, 
+by default. And, many games incidentally seem to have the "okay to lose 
+sometimes" packets more than "always need to deliver without fail" packets. 
+Hence making a natural fit for this task.
+ 
+4. High level design for a system that is able to recover from failures- 
+we will create an external database in order to save all the data seprately
+from the server. For example, the different existing groups in our app, which
+clients are connected and their names. We will update our database on every 
+change, new connection of a client etc. In case the server crashes, we can 
+upload all of the data from the external db to the server after restarting it.
+
